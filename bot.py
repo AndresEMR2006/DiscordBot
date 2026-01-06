@@ -1,0 +1,32 @@
+import discord
+import os
+from dotenv import load_dotenv
+from discord.ext import commands
+
+# Intents (permisos del bot)
+intents = discord.Intents.default()
+intents.message_content = True
+
+class MyBot(commands.Bot):
+    async def setup_hook(self):
+        bot.remove_command("help")
+        await self.load_extension("cogs.general")
+        await self.load_extension("cogs.ayuda")
+        await self.load_extension("cogs.test")
+
+bot = MyBot(command_prefix="!", intents=intents)
+
+@bot.event
+async def on_ready():
+    print(f'Bot conectado como {bot.user}')
+    for command in bot.commands:
+        print(command)
+
+load_dotenv()
+
+TOKEN = os.getenv("DISCORD_TOKEN")
+
+if TOKEN is None:
+    raise RuntimeError("No se encontró el DISCORD_TOKEN")
+
+bot.run(TOKEN)
