@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import Logs.logger as logger
 
 class ayuda(commands.Cog):
 
@@ -35,6 +36,8 @@ class ayuda(commands.Cog):
                 embed.description = "El comando no existe bro"
 
         await ctx.send(embed=embed)
+        logger.Logger.log(f"| INFO | BOT | Comando ayuda usado | Usuario: {ctx.author.name} | Comando consultado: {comando}")
+
 
 async def setup(bot):
     await bot.add_cog(ayuda(bot))

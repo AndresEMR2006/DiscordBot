@@ -2,6 +2,7 @@ import discord
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
+import Logs.logger as logger
 
 # Intents (permisos del bot)
 intents = discord.Intents.default()
@@ -21,8 +22,11 @@ bot = MyBot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f'Bot conectado como {bot.user}')
+    logger.Logger.log(f"| INFO | BOT | CONEXION |Bot conectado como {bot.user} ")
     for command in bot.commands:
-        print(command)
+        logger.Logger.log(f"| INFO | BOT | COMANDOS | Comando: {command.name}")
+        
+        
 
 load_dotenv()
 
