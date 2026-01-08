@@ -16,6 +16,7 @@ class MyBot(commands.Bot):
         await self.load_extension("cogs.general")
         await self.load_extension("cogs.ayuda")
         await self.load_extension("cogs.test")
+        await self.load_extension("cogs.mds")
 
 bot = MyBot(command_prefix="!", intents=intents)
 
