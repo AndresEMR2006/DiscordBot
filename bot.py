@@ -17,6 +17,8 @@ class MyBot(commands.Bot):
         await self.load_extension("cogs.ayuda")
         await self.load_extension("cogs.test")
         await self.load_extension("cogs.mds")
+        await self.load_extension("cogs.admin")
+        await self.load_extension("cogs.dnd")
 
 bot = MyBot(command_prefix="!", intents=intents)
 
@@ -27,13 +29,14 @@ async def on_ready():
     for command in bot.commands:
         logger.Logger.log(f"| INFO | BOT | COMANDOS | Comando: {command.name}")
         
-        
-
 load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 if TOKEN is None:
     raise RuntimeError("No se encontró el DISCORD_TOKEN")
+
+for c in bot.commands:
+    print(c.name, c.callback.__module__)
 
 bot.run(TOKEN)

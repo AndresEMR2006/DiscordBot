@@ -7,6 +7,7 @@ class general(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        print("Cog General cargado")
 
     @commands.command()
     async def pene(self, ctx):
@@ -16,6 +17,7 @@ class general(commands.Cog):
 
     @commands.command()
     async def info(self, ctx):
+        print("INFO EJECUTADO")
         """Muestra informacion sobre el bot"""
         await ctx.send(embed = info_embed())
         logger.Logger.log(f"| INFO | BOT | Comando info usado | Usuario: {ctx.author.name}")

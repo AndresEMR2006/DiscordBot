@@ -11,7 +11,7 @@ class test(commands.Cog):
         """Comando para realizar pruebas de aprendizaje y debugging"""
         embed = discord.Embed(
             title="Prueba :P",
-            description="Inserte aqui una informacion :>"
+            description="Prueba numero 2"
         )
         await ctx.send(embed=embed)     
         
