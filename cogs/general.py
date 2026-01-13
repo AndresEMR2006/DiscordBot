@@ -3,24 +3,20 @@ from discord.ext import commands
 from embeds.info import info_embed
 import Logs.logger as logger
 
+# variable para los logs
+MODULO = "GENERAL"
+
 class general(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        print("Cog General cargado")
-
-    @commands.command()
-    async def pene(self, ctx):
-        """Drohn se la queria comer"""
-        await ctx.send(f"{ctx.author.mention} bitch")
-        logger.Logger.log(f"| INFO | BOT | Comando pene usado | Usuario: {ctx.author.name}")
 
     @commands.command()
     async def info(self, ctx):
         print("INFO EJECUTADO")
         """Muestra informacion sobre el bot"""
         await ctx.send(embed = info_embed())
-        logger.Logger.log(f"| INFO | BOT | Comando info usado | Usuario: {ctx.author.name}")
+        logger.Logger.log(logger.NivelLog.INFO, MODULO, "Comando info usado", ctx.author.name)
 
     # Listeners
     # Este comando funciona unicamente localmente, es un comando para un servidor en especifico
@@ -48,9 +44,9 @@ class general(commands.Cog):
 
             try:
                 await m.send("Quieres jugar? :3")
-                logger.Logger.log(f"| INFO | BOT | DM enviado | Se le envio un DM a {m.name} para jugar con {member.name}")
+                logger.Logger.log(logger.NivelLog.INFO, MODULO, f"Se le envio un DM a {m.name} para jugar con {member.name}", None)
             except discord.Forbidden: # DM's cerrados :P
-                logger.Logger.log(f"| INFO | BOT | DM fallido | No se le pudo enviar un DM a {m.name}")
+                logger.Logger.log(logger.NivelLog.ERROR, MODULO, f"Se le intento enviar un DM a {m.name} pero este tiene los DM cerrados", None)
                 pass
 
 async def setup(bot):

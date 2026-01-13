@@ -5,38 +5,33 @@ import os
 import sys
 
 adminID = 517149490139103262
+MODULO = "ADMIN"
 
 class admin(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
+    
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def shutdown(self, ctx):
-        """Apaga el bot (Solo para el admin)"""
-        if ctx.author.id != adminID:
-            await ctx.send("No tienes permiso para usar este comando.")
-            logger.Logger.log(f"| WARNING | BOT | Comando shutdown denegado | Usuario: {ctx.author.name} intento usar shutdown")
-            return
-
+        """Apaga el bot """
         await ctx.send("Apagando el bot...")
-        logger.Logger.log(f"| INFO | BOT | Comando shutdown usado | Usuario: {ctx.author.name} apago el bot")
+        logger.Logger.log(logger.NivelLog.INFO, MODULO, "Comando shutdown usado", ctx.author.name)
         await self.bot.close()
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def msg(self, ctx: commands.Context, username: str, *, message: str):
-        """Envia un mensaje a la persona con el nombre de usuario dado (Solo para el admin)"""
-        if(ctx.author.id != adminID):
-            await ctx.send("No tienes permiso para usar este comando.")
-            logger.Logger.log(f"| WARNING | BOT | Comando msg denegado | Usuario: {ctx.author.name} intento usar msg")
-            return
+        """Envia un mensaje a la persona con el nombre de usuario dado """
         
         usuarios = logger.Logger.cargar_md_users()
         usuario_id_string = usuarios.get(username)
 
         if usuario_id_string == None:
             await ctx.send("No hay almacenado ningun usuario con ese nombre")
-            logger.Logger.log(f"| WARNING | BOT | Comando msg denegado | El usuario al que se le queria escribir no esta almacenado")
+            logger.Logger.log(logger.NivelLog.WARNING, MODULO, "Comando msg denegado - USUARIO NO ALMACENADO", None)
             return
 
         usuario_id = int(usuario_id_string)
@@ -44,42 +39,36 @@ class admin(commands.Cog):
         
         try:
             await usuario.send(message)
-            logger.Logger.log(f"| INFO | BOT | DM enviado | Se le envio el DM {message} a {usuario.name}")
+            logger.Logger.log(logger.NivelLog.INFO, MODULO, f"DM enviado a {usuario.name}", None)
+
         except discord.Forbidden: # DM's cerrados :P
-            logger.Logger.log(f"| INFO | BOT | DM fallido | No se le pudo enviar un DM a {usuario.name}")
+            logger.Logger.log(logger.NivelLog.ERROR, MODULO, f"Se le intento enviar un DM a {usuario.name} pero este tiene los DM cerrados", None)
             pass
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def reiniciar(self, ctx):
-        """Reinicia el bot (Solo para el admin)"""
-        if ctx.author.id != adminID:
-            await ctx.send("No tienes permiso para usar este comando.")
-            logger.Logger.log(f"| WARNING | BOT | Comando reiniciar denegado | Usuario: {ctx.author.name} intento usar reiniciar")
-            return
+        """Reinicia el bot"""
 
         await ctx.send("Reiniciando el bot...")
-        logger.Logger.log(f"| INFO | BOT | Comando reiniciar usado | Usuario: {ctx.author.name} reinicio el bot")
+        logger.Logger.log(logger.NivelLog.INFO, MODULO, "Comando reiniciar usado", ctx.author.name)
         os.execv(sys.executable, ['python'] + sys.argv)
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def mds(self, ctx):
         diccionario = logger.Logger.cargar_md_users()
         for usuario in diccionario:
             await ctx.send(usuario)
 
-        logger.Logger.log(f"| INFO | BOT | Comando mds usado | Usuario: {ctx.author.name} quizo ver los usuarios registrados")
+        logger.Logger.log(logger.NivelLog.INFO, MODULO, "Comando mds usado", ctx.author.name)
 
     @commands.command(hidden=True)
+    @commands.is_owner()
     async def redireccionamiento(self, ctx):
-
-        if ctx.author.id != adminID:
-            await ctx.send("No tienes permiso para usar este comando.")
-            logger.Logger.log(f"| WARNING | BOT | Comando redireccionamiento denegado | Usuario: {ctx.author.name} intento activar o desactivar redireccionamiento")
-            return
-
         self.bot.redireccionamiento = not self.bot.redireccionamiento
         await ctx.send(f"El redireccinamiento quedo en {self.bot.redireccionamiento}")
-        logger.Logger.log(f"| INFO | BOT | GLOBAL-VARIABLE | se ha cambiado el redireccionamiento a {self.bot.redireccionamiento}")
+        logger.Logger.log(logger.NivelLog.INFO, MODULO, f"se ha cambiado el redireccionamiento a {self.bot.redireccionamiento}", None)
 
 async def setup(bot):
     await bot.add_cog(admin(bot))

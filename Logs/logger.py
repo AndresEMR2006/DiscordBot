@@ -1,12 +1,28 @@
 from datetime import datetime
 import json
 import os
+from enum import Enum
+
+class NivelLog(Enum):
+    INFO = "INFO"
+    WARN = "WARN"
+    ERROR = "ERROR"
+    DEBUG = "DEBUG"
 
 class Logger:
+
     @staticmethod
-    def log(mensaje):
-        with open("Logs/log.log","a") as archivo:
-            archivo.write("["+str(datetime.now())+"] "+mensaje+"\n")
+    def log(nivelLOG, parte_sistema, suceso, causante):
+        nivel = nivelLOG.value
+        with open("Logs/log.log", "a") as archivo:
+            archivo.write(f"[{str(datetime.now())}]") # timestamp
+            archivo.write(f" | {nivel}") # gravedad - nivel
+            archivo.write(f" | {parte_sistema}") # parte - modulo
+            archivo.write(f" | {suceso}") # contexto
+            if not (causante is None):
+                archivo.write(f" | USADO POR: {causante}")
+            archivo.write("\n")
+
 
     @staticmethod
     def cargar_md_users():

@@ -3,6 +3,7 @@ from discord.ext import commands
 import Logs.logger as logger
 
 adminID = 517149490139103262
+MODULO = "MDS"
 
 class mds(commands.Cog):
 
@@ -23,9 +24,7 @@ class mds(commands.Cog):
             if self.bot.redireccionamiento:
                 admin = await self.bot.fetch_user(adminID)
                 await admin.send(f"Autor: {message.author.name}\nMensaje: {message.content}")
-                logger.Logger.log(f"[DM | REDIRECCIONADO | {message.author.name} -> {message.content}]")
-            else:
-                logger.Logger.log(f"[DM] | {message.author.name} -> {message.content}")
+            logger.Logger.log(logger.NivelLog.INFO, MODULO, f" {message.author.name}: {message.content}]", None)
 
             usuario = [message.author.name, user_id]
             logger.Logger.guardar_md_users(usuario)

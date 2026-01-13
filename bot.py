@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 from discord.ext import commands
 import Logs.logger as logger
 
+# variable para los logs
+MODULO = "BOT"
+
 # Intents (permisos del bot)
 intents = discord.Intents.default()
 intents.message_content = True
@@ -28,9 +31,7 @@ bot = MyBot(command_prefix="!", intents=intents)
 @bot.event
 async def on_ready():
     print(f'Bot conectado como {bot.user}')
-    logger.Logger.log(f"| INFO | BOT | CONEXION |Bot conectado como {bot.user} ")
-    for command in bot.commands:
-        logger.Logger.log(f"| INFO | BOT | COMANDOS | Comando: {command.name}")
+    logger.Logger.log(logger.NivelLog.INFO, MODULO, f"Bot conectado como {bot.user}", None)
         
 load_dotenv()
 
