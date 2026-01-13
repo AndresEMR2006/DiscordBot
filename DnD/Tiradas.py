@@ -19,10 +19,6 @@ class tiradas():
             return None
 
     def roll(self, tirada: str):
-        # Posibles retornos:
-        # -1 = Error en formato, d no encontrada
-        # -2 = Error en formato, segmentacion fallida
-        # -3 = Error en dado, el dado no esta en la lista
 
         tiradas = []
 
