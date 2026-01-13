@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import random
 import re
+import DnD.Tiradas as tiradas
 
 tipos = {4, 6, 8, 10, 12, 20, 100}
 
@@ -27,29 +28,19 @@ class DnDCog(commands.Cog):
     async def roll(self, ctx, dado: str):
         """Comando para lanzar un dado"""
 
-        if not ("d" in dado):
-            await ctx.send("Formato inválido. Usa NdM, donde N es el número de dados y M el número de caras.")
+        tirador = tiradas.tiradas()
+        resultado = tirador.roll(dado)
+
+        if not (resultado.get("estado")): 
+            await ctx.send(resultado.get("error"))
             return
-
-        partes = segmentar(dado)
-
-        if partes is None:
-            await ctx.send("Formato inválido. Usa NdM, donde N es el número de dados y M el número de caras.")
-            return
-
-        if not (partes[1] in tipos):
-            await ctx.send(f"Tipo de dado inválido. Los tipos permitidos son: {', '.join(map(str, tipos))}.")
-            return
-
-        for dados in range(int(partes[0])):
-            rng = random.randint(1, int(partes[1]))
-            if partes[1] == 20 and rng == 20:
-                await ctx.send(f"¡Damm! salio un {partes[1]} natural :o")
+        
+        for i, tirada in enumerate(resultado["tiradas"]):
+            if i in resultado["posNat20"]:
+                await ctx.send("¡Damm! salió un nat 20 🎉")
             else:
-                if partes[2] != 0:
-                    await ctx.send(f"Ha caido un {rng} + {partes[2]}:P")
-                else:
-                    await ctx.send(f"Ha caido un {rng} :P")
+                await ctx.send(f"Resultado del tiro: {tirada}")
+            
 
 
 async def setup(bot: commands.Bot):
