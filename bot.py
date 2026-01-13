@@ -12,6 +12,9 @@ intents.voice_states = True
 
 class MyBot(commands.Bot):
     async def setup_hook(self):
+
+        self.redireccionamiento = True
+
         bot.remove_command("help")
         await self.load_extension("cogs.general")
         await self.load_extension("cogs.ayuda")

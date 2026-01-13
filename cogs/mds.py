@@ -20,7 +20,12 @@ class mds(commands.Cog):
         if isinstance(message.channel, discord.DMChannel):
             user_id = str(message.author.id)
 
-            logger.Logger.log(f"[DM] {message.author.name} -> {message.content}")
+            if self.bot.redireccionamiento:
+                admin = await self.bot.fetch_user(adminID)
+                await admin.send(f"Autor: {message.author.name}\nMensaje: {message.content}")
+                logger.Logger.log(f"[DM | REDIRECCIONADO | {message.author.name} -> {message.content}]")
+            else:
+                logger.Logger.log(f"[DM] | {message.author.name} -> {message.content}")
 
             usuario = [message.author.name, user_id]
             logger.Logger.guardar_md_users(usuario)

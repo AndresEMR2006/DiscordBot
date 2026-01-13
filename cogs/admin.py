@@ -69,5 +69,17 @@ class admin(commands.Cog):
 
         logger.Logger.log(f"| INFO | BOT | Comando mds usado | Usuario: {ctx.author.name} quizo ver los usuarios registrados")
 
+    @commands.command(hidden=True)
+    async def redireccionamiento(self, ctx):
+
+        if ctx.author.id != adminID:
+            await ctx.send("No tienes permiso para usar este comando.")
+            logger.Logger.log(f"| WARNING | BOT | Comando redireccionamiento denegado | Usuario: {ctx.author.name} intento activar o desactivar redireccionamiento")
+            return
+
+        self.bot.redireccionamiento = not self.bot.redireccionamiento
+        await ctx.send(f"El redireccinamiento quedo en {self.bot.redireccionamiento}")
+        logger.Logger.log(f"| INFO | BOT | GLOBAL-VARIABLE | se ha cambiado el redireccionamiento a {self.bot.redireccionamiento}")
+
 async def setup(bot):
     await bot.add_cog(admin(bot))
