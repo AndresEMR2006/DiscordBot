@@ -20,14 +20,10 @@ class mds(commands.Cog):
         if isinstance(message.channel, discord.DMChannel):
             user_id = str(message.author.id)
 
-            logger.Logger.log(f"[DM] {message.author} -> {message.content}")
+            logger.Logger.log(f"[DM] {message.author.name} -> {message.content}")
 
-            self.md_users[user_id] = {
-                "name": message.author.name,
-                "last_message": message.content
-            }
-
-            logger.Logger.guardar_md_users(self.md_users)
+            usuario = [message.author.name, user_id]
+            logger.Logger.guardar_md_users(usuario)
 
 async def setup(bot):
     await bot.add_cog(mds(bot))

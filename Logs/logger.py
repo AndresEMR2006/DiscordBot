@@ -5,20 +5,24 @@ import os
 class Logger:
     @staticmethod
     def log(mensaje):
-        archivo = open("Logs/log.log", "a")
-        archivo.write("["+str(datetime.now())+"] "+mensaje+"\n")
-        archivo.close()
+        with open("Logs/log.log","a") as archivo:
+            archivo.write("["+str(datetime.now())+"] "+mensaje+"\n")
 
     @staticmethod
     def cargar_md_users():
-        if not os.path.exists("data/md_users.json"):
-            return {}
+        usuarios = {}
+        with open("Logs/users.log","r") as archivo:
+            for linea in archivo:
+                partes = linea.split(',')
+                usuarios[partes[0]] = partes[1] # key = nombre, value = id
 
-        with open("data/md_users.json", "r", encoding="utf-8") as f:
-            return json.load(f)
+        return usuarios
 
     @staticmethod
-    def guardar_md_users(md_users):
-        with open("data/md_users.json", "w", encoding="utf-8") as f:
-            json.dump(md_users, f, indent=4, ensure_ascii=False)
-        
+    def guardar_md_users(md_user): # tomamos md_user como lista que contiene en pos0 el nombre y en pos 1 el id
+        with open("Logs/users.log","r+") as archivo:
+            for linea in archivo:
+                if md_user[1] in linea:
+                    return
+ 
+            archivo.write(md_user[0] + "," + md_user[1] + "\n")

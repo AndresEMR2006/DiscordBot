@@ -23,7 +23,7 @@ class general(commands.Cog):
         logger.Logger.log(f"| INFO | BOT | Comando info usado | Usuario: {ctx.author.name}")
 
     # Listeners
-
+    # Este comando funciona unicamente localmente, es un comando para un servidor en especifico
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         canal_texto = self.bot.get_channel(812372867873243155)

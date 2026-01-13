@@ -36,7 +36,4 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 if TOKEN is None:
     raise RuntimeError("No se encontró el DISCORD_TOKEN")
 
-for c in bot.commands:
-    print(c.name, c.callback.__module__)
-
 bot.run(TOKEN)
